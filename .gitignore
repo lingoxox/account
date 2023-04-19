@@ -1,0 +1,6 @@
+build
+*.egg-info
+AUTHORS
+ChangeLog
+clean.sh
+celerybeat-schedule.*
