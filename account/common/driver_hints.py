@@ -15,8 +15,8 @@
 
 import functools
 
-import exception
-from i18n import _
+from . import exception
+from .i18n import _
 
 
 def truncated(f):

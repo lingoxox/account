@@ -21,7 +21,7 @@ SQLAlchemy models for nova data.
 
 from oslo_config import cfg
 from oslo_db.sqlalchemy import models
-from satellite.common import jsonutils
+from ..common import jsonutils
 from oslo_utils import timeutils
 import six
 from sqlalchemy import (Table, Column, Index, Integer, BigInteger, Enum, String,
@@ -32,6 +32,7 @@ from sqlalchemy import orm
 from sqlalchemy import ForeignKey, DateTime, Boolean, \
             Text, Float, TypeDecorator, SmallInteger
 
+from account.db.sqlalchemy import api
 
 CONF = cfg.CONF
 BASE = declarative_base()
@@ -63,7 +64,7 @@ class SoftDeleteMixin(object):
         self.save(session=session)
 
 
-class satelliteBase(SoftDeleteMixin,
+class accountBase(SoftDeleteMixin,
                 models.TimestampMixin,
                 models.ModelBase):
     metadata = None
@@ -99,12 +100,12 @@ class satelliteBase(SoftDeleteMixin,
         return copy
 
     def save(self, session=None):
-        from satellite.db.sqlalchemy import api
+        from account.db.sqlalchemy import api
 
         if session is None:
             session = api.get_session()
 
-        super(satelliteBase, self).save(session=session)
+        super(accountBase, self).save(session=session)
 
     @classmethod
     def from_dict(cls, d):
@@ -158,7 +159,6 @@ class ExptPlatformBase(models.ModelBase):
         return copy
 
     def save(self, session=None):
-        from satellite.db.sqlalchemy import api
 
         if session is None:
             session = api.get_session()
@@ -183,7 +183,7 @@ class ExptPlatformBase(models.ModelBase):
         return getattr(self, item)
 
 
-class DictBase(satelliteBase):
+class DictBase(accountBase):
     @classmethod
     def from_dict(cls, d):
         """Returns a model instance from a dictionary."""
@@ -237,7 +237,6 @@ class CourseBase(models.ModelBase):
         return copy
 
     def save(self, session=None):
-        from satellite.db.sqlalchemy import api
 
         if session is None:
             session = api.get_session()

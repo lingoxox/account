@@ -6,7 +6,7 @@ See http://docs.openstack.org/developer/oslo.i18n/usage.html .
 
 import oslo_i18n
 
-DOMAIN = 'satellite'
+DOMAIN = 'account'
 
 _translators = oslo_i18n.TranslatorFactory(domain=DOMAIN)
 

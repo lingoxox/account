@@ -4,3 +4,4 @@ AUTHORS
 ChangeLog
 clean.sh
 celerybeat-schedule.*
+*.pyc

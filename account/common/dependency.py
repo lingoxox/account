@@ -27,7 +27,7 @@ See also:
 
 import traceback
 
-from i18n import _
+from .i18n import _
 
 
 _REGISTRY = {}

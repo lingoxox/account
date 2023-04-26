@@ -3,7 +3,7 @@ import collections
 from oslo_utils import strutils
 from oslo_config import cfg
 from oslo_log import log
-import jsonutils
+from oslo_serialization import jsonutils
 import passlib.hash
 import six
 import requests
@@ -66,50 +66,6 @@ def attr_as_boolean(val_attr):
     return strutils.bool_from_string(val_attr, default=True)
 
 
-def terraclient(context=None):
-    from terraclient.v1 import Client as TerraClient
-    manage_url = CONF.url_config.terra_api_url
-    headers = {}
-    extra_kwargs = dict(management_url=manage_url,
-                        headers=headers)
-    c = TerraClient('1',
-                     service_type='experiment',
-                     bypass_url=manage_url + '/v1',
-                     debug=True, **extra_kwargs)
-    return c
-
-
-def terraclient_admin():
-    return terraclient()
-    # from terraclient.v1 import Client as TerraClient
-    # manage_url = 'http://172.171.4.234:16120'
-    # headers = {}
-    # extra_kwargs = dict(management_url=manage_url,
-    #                     headers=headers)
-    # c = TerraClient('super',
-    #                 'sdnlab',
-    #                 service_type='experiment',
-    #                 bypass_url='http://172.171.4.234:16160/v1',
-    #                 debug=True, **extra_kwargs)
-    # return c
-
-def cometclient_admin():
-    from cometclient.client import Client as Cometclient
-    manage_url = CONF.url_config.comet_api_url
-    c = Cometclient(
-        '1',
-        service_type='telemetry',
-        bypass_url=manage_url)
-    return c
-
-def solarclient(request=None):
-    from solarclient import client as solar_client
-    manage_url = CONF.url_config.solar_api_url
-    c = solar_client.Client(
-        '1',
-        auth_url=manage_url,
-        bypass_url=manage_url)
-    return c
 
 
 def notify_third_user_expt_success(third_user_id, cur_uuid, course_uuid):

@@ -5,7 +5,7 @@ __author__ = "SYK"
 __date__ = "2023/4/18 下午1:20"
 
 from oslo_config import cfg
-
+import passlib.utils
 SERVER_NAME = 'account'
 DEFAULT_LOCAL_AMQP_SERVER_ADDRESS = 'amqp://guest:guest@localhost:5672'
 
@@ -13,13 +13,13 @@ FILE_OPTIONS = {
 
     'database': [
         cfg.StrOpt('connection',
-                   default=f'mysql+pymysql://root:stack@127.0.0.1/{SERVER_NAME}',
+                   default=f'mysql+pymysql://root:123@127.0.0.1/{SERVER_NAME}',
                    help=''),
         cfg.StrOpt('slave_connection',
                    default='',
                    help=''),
         cfg.StrOpt('migrate_version_dir',
-                   default='/usr/local/lib/python3.9/site-packages/'),
+                   default='/home/ling/.virtualenvs/env-trit-python3.10/lib/python3.10/site-packages/'),
     ],
     'cache': [
         cfg.StrOpt('connection',
@@ -77,7 +77,7 @@ FILE_OPTIONS = {
     'http_service': [
         cfg.ListOpt('plugins',
                     default=[
-                        'example',
+
                     ],
                     help='List of Business Plugin'
                     ),
@@ -94,7 +94,7 @@ FILE_OPTIONS = {
                    help='IP address on which openlab trit API listens'),
 
         cfg.IntOpt(f'api_{SERVER_NAME}_listen_port',
-                   default=16091,
+                   default=18010,
                    min=1, max=65535,
                    help='Port on which openlab trit API listens'),
 
@@ -111,6 +111,23 @@ FILE_OPTIONS = {
                         'service. If not specified or 0, the default is '
                         'equal to the number of CPUs available for '
                         'best performance.'),
+
+    ],
+    'identity': [
+            cfg.IntOpt('max_password_length', default=4096,
+                       max=passlib.utils.MAX_PASSWORD_SIZE,
+                       help='Maximum supported length for user passwords; '
+                            'decrease to improve performance.'),
+
+            cfg.IntOpt('lock_interval', default=1800,
+                       help='Time of locking if retry logging in more than'
+                        'specified login_chance(in seconds).'),
+
+            cfg.IntOpt('crypt_strength', default=10000, min=1000, max=100000,
+                                       help='The value passed as the keyword "rounds" to '
+                                            'passlib\'s encrypt method.'),
+        ],
+    None: [
 
     ]
 

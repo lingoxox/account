@@ -1,7 +1,7 @@
 # coding:utf-8
-"""satellite base exception handling.
+"""account base exception handling.
 
-Includes decorator for re-raising satellite-type exceptions.
+Includes decorator for re-raising account-type exceptions.
 
 SHOULD include dedicated exception logging.
 
@@ -13,9 +13,9 @@ from oslo_log import log as logging
 from oslo_utils import excutils
 import six
 
-from safe_utils import getcallargs
-from i18n import _
-from i18n import _LE
+from .safe_utils import getcallargs
+from .i18n import _
+from .i18n import _LE
 
 import webob.exc
 
@@ -69,7 +69,7 @@ def wrap_exception(notifier=None, get_notifier=None):
 
 
 class Error(Exception):
-    """Base satellite Exception
+    """Base account Exception
 
     To correctly use this class, inherit from it and define
     a 'msg_fmt' property. That msg_fmt will get printf'd
@@ -624,6 +624,9 @@ class RolePermissionNotFound(NotFound):
 class RoleUserNotFound(NotFound):
     msg_fmt = _("Could not find user %(user_id)s "
                 "with role %(role_id)s")
+
+class ResourceNotFound(NotFound):
+    msg_fmt = _("Could not find resource %(resource)s ")
 
 
 class ModuleWithArgsExist(Conflict):
@@ -1271,3 +1274,20 @@ class ArticleNotFound(NotFound):
     errno = 50012
     msg_fmt = _("article %(id)s could not be found.")
 
+class UserCellPhoneExists(Conflict):
+    errno = 31
+    msg_fmt = _("User with cellphone %(cellphone)s exists.")
+
+
+class UserNameExistsWithUniversity(Conflict):
+    errno = 31
+    msg_fmt = _("User name %(name)s with university id %(site_id)s exists.")
+
+class UserNameExists(Conflict):
+    errno = 1
+    msg_fmt = _("User with name %(name)s exists.")
+
+
+class UserNotFound(NotFound):
+    errno = 4
+    msg_fmt = _("Could not find user: %(user_id)s")
